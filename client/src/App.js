@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
+import Base from "./Base";
+import Web3Provider from 'web3-react'
+import TopNav from "./components/Nav/TopNav";
 
 import "./App.css";
+
+import { Connectors } from 'web3-react'
+const { InjectedConnector, NetworkOnlyConnector } = Connectors
+const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] })
+const Local = new NetworkOnlyConnector({
+  providerURL: "http://127.0.0.1:7545"
+})
+
+const connectors = { MetaMask, Local }
+
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
@@ -49,24 +62,21 @@ class App extends Component {
   };
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
-    );
+      <Web3Provider
+        connectors={connectors}
+        libraryName={'ethers.js' | 'web3.js' | null}
+      >
+        <div className="d-flex flex-column">
+        <TopNav />
+        <div className="big-container mx-auto">
+          <Base />
+
+        </div>
+        </div>
+      </Web3Provider>
+
+    )
   }
 }
 

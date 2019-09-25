@@ -32,6 +32,7 @@ contract Micronews is Ownable {
 
     mapping(uint256 => mapping(address => uint256)) userBookmarksPerPeriod;
     mapping(uint256 => mapping(address => uint256)) receivedBookmarksPerPeriod;
+    /* feePeriodId => user => number of bookmarks */
 
     uint256 public channelId = 1;
     uint256 public RESERVE_RATIO = 500000; // 500k / 1 million = 50%
@@ -60,7 +61,7 @@ contract Micronews is Ownable {
         uint256 timestamp;
         uint256 upvotes;
         uint256 downvotes;
-        string[] content;
+        string content;
         address creator;
     }
 
@@ -83,7 +84,7 @@ contract Micronews is Ownable {
     event PostCreated(
         address indexed creator,
         uint256 indexed channelId,
-        string[] content
+        string content
     );
 
     /* ------ BONDING CURVE FUNCTIONS ------ */
@@ -92,7 +93,7 @@ contract Micronews is Ownable {
       @dev call bonded curve mint function and register channel equity ownership
       @param _channelId to call channel CBT contract
      */
-    function mintEquity(uint256 _channelId) payable {
+    function mintEquity(uint256 _channelId) public payable {
         uint256 amount = channelIdToContract[_channelId].mint(); // tokens calculated with msg.value
         channelIdToTotalEquity[_channelId] = channelIdToTotalEquity[_channelId]
             .add(amount);
@@ -107,7 +108,7 @@ contract Micronews is Ownable {
       @param _channelId to call channel CBT contract
       @param _burnAmount equity to sell
      */
-    function burnEquity(uint256 _channelId, uint256 _burnAmount) {
+    function burnEquity(uint256 _channelId, uint256 _burnAmount) public {
         channelIdToContract[_channelId].burn(_burnAmount);
 
         channelIdToTotalEquity[_channelId] = channelIdToTotalEquity[_channelId]
@@ -127,7 +128,7 @@ contract Micronews is Ownable {
      */
     function subscribeToChannel(uint256 _channelId) public payable {
         require(
-            msg.value == CHANNEL_SUBSCRIPION_FEE,
+            msg.value == CHANNEL_SUBSCRIPTION_FEE,
             "Must pay exact fee to subscribe"
         );
         channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg
@@ -148,7 +149,7 @@ contract Micronews is Ownable {
         returns (bool)
     {
         return
-            channelIdIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg
+            channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg
                 .sender];
     }
 
@@ -158,10 +159,10 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes _channelName) onlyOwner {
+    function createChannel(bytes memory _channelName) onlyOwner public {
         channelIdToContract[channelId] = new SimpleCBT(RESERVE_RATIO);
 
-        Channel newChannel = Channel({
+        Channel memory newChannel = Channel({
             id: channelId,
             subscribers: 0,
             name: _channelName
@@ -174,10 +175,10 @@ contract Micronews is Ownable {
         @dev content creators must register to begin building reputation
         @param _creatorName
      */
-    function registerContentCreator(bytes _creatorName) {
-        require(!creatorAddressToId[msg.sender], "Creator already exists");
+    function registerContentCreator(bytes memory _creatorName) public {
+        require(creatorAddressToId[msg.sender] == 0, "Creator already exists");
         creatorAddressToId[msg.sender] = creatorId;
-        creatorIdToAddress[creatorId] = _creatorName;
+        creatorIdToName[creatorId] = _creatorName;
     }
 
     /* 
@@ -185,7 +186,7 @@ contract Micronews is Ownable {
         @param _content
         @param _channelId
      */
-    function createPost(string[] _content, uint256 _channelId) {
+    function createPost(string memory _content, uint256 _channelId) public {
         require(creatorAddressToId[msg.sender] > 0, "Creator not registered");
         require(
             creatorToLastPosted[msg.sender] + TIME_BETWEEN_POSTS <
@@ -193,7 +194,7 @@ contract Micronews is Ownable {
             "Creator must wait 12 hours between posts"
         );
         require(
-            creatorIdToUserSubscriptionStatus[_channelId][msg.sender] == true,
+            channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg.sender] == true,
             "Creator not subscribed to channel"
         );
 
@@ -232,7 +233,8 @@ contract Micronews is Ownable {
         @param upvote boolean
      */
     function voteOnPost(uint256 _channelId, uint256 _postId, bool upvote)
-        isEquityOwner
+        isEquityOwner(_channelId)
+        public
     {
         if (upvote) {
             posts[_postId].upvotes++;
@@ -248,61 +250,62 @@ contract Micronews is Ownable {
         @param _postId
         @param upvote boolean
      */
-    function bookmarkPost(uint256 _postId, uint256 _channelId) {
+    function bookmarkPost(uint256 _postId, uint256 _channelId) public {
         require(
             posts[_postId].feePeriodId == currentFeePeriod,
             "Bookmarks are only valid for posts in current fee period"
         );
         require(
-            userBookmarksPerPeriod[feePeriodId][msg.sender] <
+            userBookmarksPerPeriod[currentFeePeriod][msg.sender] <
                 MAX_BOOKMARKS_PER_PERIOD,
             "User has no bookmarks remaining"
         );
         require(
-            channelIdToUserSubscriptionStatus[feePeriodId][_channelId][msg
+            channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg
                 .sender] ==
                 true,
             "Bookmarker must be subscribed to channel"
         );
 
-        userBookmarksPerPeriod[feePeriodId][msg.sender]++;
+        userBookmarksPerPeriod[currentFeePeriod][msg.sender]++;
 
         address postCreator = posts[_postId].creator;
-        receivedBookmarksPerPeriod[postCreator]++;
+        receivedBookmarksPerPeriod[currentFeePeriod][postCreator]++;
     }
 
     /* ------ FEE PERIOD FUNCTIONS ------ */
 
     function closeFeePeriod() public onlyOwner {
         require(
-            genesisTimestamp + feePeriodId.mul(WEEK_IN_SECONDS) >
+            genesisTimestamp + currentFeePeriod.mul(WEEK_IN_SECONDS) >
                 block.timestamp,
             "Fee period not yet complete"
         );
 
         for (uint256 i = 0; i < getNumberOfChannels(); i++) {
-            uint256 fee = (channels[i].subscribers).mul(SUBSCRIPTION_FEE).div(
+            uint256 fee = (channels[i].subscribers).mul(CHANNEL_SUBSCRIPTION_FEE).div(
                 2
             );
-            feePeriods[feePeriodId][i].valueForEquityDistribution = fee;
-            feePeriods[feePeriodId][i].valueForContentDistribution = fee;
+
+            feePeriods[currentFeePeriod][i].valueForEquityDistribution = fee;
+            feePeriods[currentFeePeriod][i].valueForCreatorDistribution = fee;
         }
 
-        feePeriodId++;
+        currentFeePeriod++;
     }
 
-    function collectEquityFees(uint256 _channelId) public isEquityOwner {
+    function collectEquityFees(uint256 _channelId) public isEquityOwner(_channelId) {
         uint256 equityOwnership = channelIdToUserEquity[_channelId][msg.sender];
         uint256 totalEquity = channelIdToTotalEquity[_channelId];
 
         uint256 payout = (equityOwnership *
             (
-                feePeriods[feePeriodId - 1][_channelId]
+                feePeriods[currentFeePeriod - 1][_channelId]
                     .valueForEquityDistribution
             )) /
             totalEquity;
 
-        periodFeesCollected[feePeriodId - 1][_channelId][msg.sender] = true;
+        periodFeesCollected[currentFeePeriod - 1][_channelId][msg.sender] = true;
 
         msg.sender.transfer(payout);
     }
