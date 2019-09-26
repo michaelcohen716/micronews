@@ -1,14 +1,17 @@
 .big-container {
   width: 100%;
-  height: calc(100vh - 50px);
   background: rgba(135,138,140,0.5);
 }
 
-.outer-container {
-  padding: 0px 100px;
+.app {
+  /* height:100vh; */
+
 }
 
-.content-container {
+.outer-container {
+  padding: 0px 100px 0px 100px;
+}
+
+.inner-container {
   width: 800px;
 }
-

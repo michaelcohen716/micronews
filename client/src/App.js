@@ -2,20 +2,19 @@ import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 import Base from "./Base";
-import Web3Provider from 'web3-react'
+import Web3Provider from "web3-react";
 import TopNav from "./components/Nav/TopNav";
 
 import "./App.css";
 
-import { Connectors } from 'web3-react'
-const { InjectedConnector, NetworkOnlyConnector } = Connectors
-const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] })
+import { Connectors } from "web3-react";
+const { InjectedConnector, NetworkOnlyConnector } = Connectors;
+const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] });
 const Local = new NetworkOnlyConnector({
   providerURL: "http://127.0.0.1:7545"
-})
+});
 
-const connectors = { MetaMask, Local }
-
+const connectors = { MetaMask, Local };
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
@@ -33,7 +32,7 @@ class App extends Component {
       const deployedNetwork = SimpleStorageContract.networks[networkId];
       const instance = new web3.eth.Contract(
         SimpleStorageContract.abi,
-        deployedNetwork && deployedNetwork.address,
+        deployedNetwork && deployedNetwork.address
       );
 
       // Set web3, accounts, and contract to the state, and then proceed with an
@@ -42,7 +41,7 @@ class App extends Component {
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
+        `Failed to load web3, accounts, or contract. Check console for details.`
       );
       console.error(error);
     }
@@ -65,18 +64,18 @@ class App extends Component {
     return (
       <Web3Provider
         connectors={connectors}
-        libraryName={'ethers.js' | 'web3.js' | null}
+        libraryName={"ethers.js" | "web3.js" | null}
       >
-        <div className="d-flex flex-column">
-        <TopNav />
-        <div className="big-container mx-auto">
-          <Base />
-
-        </div>
+        <div className="app">
+          <div className="d-flex flex-column">
+            <TopNav />
+            <div className="big-container mx-auto">
+              <Base />
+            </div>
+          </div>
         </div>
       </Web3Provider>
-
-    )
+    );
   }
 }
 

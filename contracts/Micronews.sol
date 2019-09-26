@@ -159,8 +159,10 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes memory _channelName) onlyOwner public {
+    function createChannel(bytes memory _channelName) onlyOwner public payable {
+        require(msg.value == CHANNEL_SUBSCRIPTION_FEE, "Must subscribe to create");
         channelIdToContract[channelId] = new SimpleCBT(RESERVE_RATIO);
+        subscribeToChannel(channelId);
 
         Channel memory newChannel = Channel({
             id: channelId,

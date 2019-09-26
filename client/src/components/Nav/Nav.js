@@ -1,23 +1,55 @@
-import React, { useEffect } from "react";
-import science from "../../assets/science.png";
+import React, { useState } from "react";
+import film from "../../assets/film.png";
+import gaming from "../../assets/gaming.png";
+import crypto from "../../assets/crypto.png";
 
-function NavItem() {
+function NavItem({ setActiveItem, active, item: { img, text } }) {
   return (
-    <div className="nav-item-holder my-2">
-      <div className="mx-auto my-auto p-2">
-        <img src={science} className="img-fluid" />
+    <div
+      className={`nav-item-holder my-2 ${active ? "" : "inactive-nav-item"}`}
+      onClick={setActiveItem}
+    >
+      <div className="mx-auto my-auto p-1">
+        <img src={img} className="img-fluid" />
       </div>
     </div>
   );
 }
 
+const items = [
+  {
+    img: film,
+    text: "Film"
+  },
+  {
+    img: gaming,
+    text: "Gaming"
+  },
+  {
+    img: crypto,
+    text: "Crypto"
+  }
+];
+
 function Nav() {
+  const [activeItem, setActiveItem] = useState(0);
+
   return (
-    <div className="d-flex flex-column mt-5">
-      <NavItem />
-      <NavItem />
-      <NavItem />
-      <NavItem />
+    <div className="d-flex flex-column nav">
+      <div className="d-flex flex-column my-auto pb-5">
+        {items.map((item, i) => {
+            console.log("i", i)
+            console.log("acgiveimte", activeItem)
+          return (
+            <NavItem
+              active={i === activeItem}
+              setActiveItem={() => setActiveItem(i)}
+              item={item}
+              key={i}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
