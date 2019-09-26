@@ -68,7 +68,7 @@ class App extends Component {
       >
         <div className="app">
           <div className="d-flex flex-column">
-            <TopNav />
+            {/* <TopNav /> */}
             <div className="big-container mx-auto">
               <Base />
             </div>

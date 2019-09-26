@@ -1,10 +1,12 @@
 .big-container {
   width: 100%;
+}
+
+body {
   background: rgba(135,138,140,0.5);
 }
 
 .app {
-  /* height:100vh; */
   min-width: 1200px;
 }
 

@@ -2,6 +2,7 @@
   width: 100%;
   height: 50px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.46);
+  background: white;
 }
 
 .company-name {
@@ -35,4 +36,18 @@
 
 .inactive-nav-item {
   opacity: 0.3;
+}
+
+.top-nav-item {
+  font-family: "Saira Stencil One", cursive;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.top-nav-active {
+  color: black;
+}
+
+.top-nav-inactive {
+  color: gray;
 }
