@@ -12,6 +12,37 @@
 
 .vote-slice {
   width: 60px;
-  background: lightgray;
+  background: #e6e6e6;
+  /* background: lightgray; */
   height: 100%;
+}
+
+.content-header {
+  font-size: 12px;
+}
+
+.channel-title {
+  color: blue;
+}
+
+.content-title {
+  font-size: 22px;
+  color: gray;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+}
+
+.content-preview {
+  font-size: 14px;
+  color: gray;
+}
+
+.arrow-img {
+  width: 32px;
+  height: auto;
+  cursor: pointer;
+}
+
+.timestamp {
+  color: lightgray;
 }
