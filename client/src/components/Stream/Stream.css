@@ -1,0 +1,47 @@
+.stream {
+  width: 740px;
+}
+
+.stream-card {
+  width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px #ccc;
+  height: 250px;
+  background: #F8F8FF;
+}
+
+.vote-slice {
+  width: 60px;
+  background: #e6e6e6;
+  height: 100%;
+}
+
+.content-header {
+  font-size: 12px;
+}
+
+.channel-title {
+  color: blue;
+}
+
+.content-title {
+  font-size: 22px;
+  color: gray;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+}
+
+.content-preview {
+  font-size: 14px;
+  color: gray;
+}
+
+.arrow-img {
+  width: 32px;
+  height: auto;
+  cursor: pointer;
+}
+
+.timestamp {
+  color: lightgray;
+}

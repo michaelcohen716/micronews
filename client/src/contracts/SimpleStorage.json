@@ -13,7 +13,8 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "signature": "0x60fe47b1"
     },
     {
       "constant": true,
@@ -27,7 +28,8 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "signature": "0x6d4ce63c"
     }
   ],
   "bytecode": "0x608060405234801561001057600080fd5b5060ec8061001f6000396000f3fe6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146085575b600080fd5b348015605957600080fd5b50608360048036036020811015606e57600080fd5b810190808035906020019092919050505060ad565b005b348015609057600080fd5b50609760b7565b6040518082815260200191505060405180910390f35b8060008190555050565b6000805490509056fea165627a7a72305820ca30c2fd118e9bbe41f98494fc2ed048d033b9ab3c3cc8189cf4e1c2db37117b0029",
@@ -544,9 +546,40 @@
     "name": "solc",
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "1569438351051": {
+      "events": {},
+      "links": {},
+      "address": "0x026Cc88919cf3D9527B0B97ac37F017dfB706555",
+      "transactionHash": "0x84df0690030e53420e3f3d2248f8ba7b81313f281db30a6c1b346993746c291f"
+    },
+    "1569508385320": {
+      "events": {},
+      "links": {},
+      "address": "0xb7f0640aC89b494346Ab74783e785Fa05FDab8dC",
+      "transactionHash": "0x93d707bd4b3c0b9e93418cca88e19e7cc9f7960487353c1fec82fbcf5da6e009"
+    },
+    "1569593342814": {
+      "events": {},
+      "links": {},
+      "address": "0xEE84d30CC583Fe8cA62203Ae321F53830A99A165",
+      "transactionHash": "0x037773f9a9142d1d32b5f056f1f5bdebe227e542fe023ee9b8596b7db3d25769"
+    },
+    "1569593992108": {
+      "events": {},
+      "links": {},
+      "address": "0x5A74aa79f51851be3c8c60BB694eF468cb95ca20",
+      "transactionHash": "0xac3a358015006eea96e644c4c349b120d7296e795fa223bca5f50130f4943718"
+    },
+    "1569594365892": {
+      "events": {},
+      "links": {},
+      "address": "0xF34BA7Bd8A4b0a8D2482a6e0CE6AC8ACae82d84E",
+      "transactionHash": "0xf35a4cf521eb6a0b4640c391bd2dc25278c19f04fee4f1bd9d54f0596c154c66"
+    }
+  },
   "schemaVersion": "3.0.2",
-  "updatedAt": "2019-09-23T11:25:26.928Z",
+  "updatedAt": "2019-09-27T14:26:12.412Z",
   "devdoc": {
     "methods": {}
   },

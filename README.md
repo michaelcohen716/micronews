@@ -42,7 +42,8 @@ Half of the content pot is distributed based on the bookmarks a creator receives
 
 This is an incentive for quality, but also an incentive for creators to promote themselves and the platform.
 
-
+#### Micronews Revenue Model
+[This is a link](https://docs.google.com/spreadsheets/d/12Wq5UG3ZnsHekSdW4isp9vCAHzdatdprX4ghfyTDsdc/edit?usp=sharing) to the Micronews revenue model template. Clone it to use.
 
 #### Extra points
 - bonding curve prevents centralized accumulation because of exponential price growth

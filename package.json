@@ -7,8 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "openzeppelin-solidity": "^2.3.0",
-    "solhint": "^2.2.0"
+    "openzeppelin-solidity": "^2.3.0"
   },
   "devDependencies": {
     "prettier": "^1.18.2",
