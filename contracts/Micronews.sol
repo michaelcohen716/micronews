@@ -14,6 +14,7 @@ contract Micronews is Ownable {
     }
 
     uint256 CHANNEL_SUBSCRIPTION_FEE = 0.1 ether;
+    uint256 CHANNEL_INITIATION_FEE = 0.2 ether;
 
     uint256 constant WEEK_IN_SECONDS = 86400 * 7;
     uint256 constant MAX_BOOKMARKS_PER_PERIOD = 5;
@@ -159,10 +160,15 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes memory _channelName) onlyOwner public payable {
-        require(msg.value == CHANNEL_SUBSCRIPTION_FEE, "Must subscribe to create");
+    function createChannel(bytes memory _channelName) public payable onlyOwner {
+        require(
+            msg.value == CHANNEL_INITIATION_FEE + CHANNEL_SUBSCRIPTION_FEE,
+            "Must mint and subscribe to create"
+        );
         channelIdToContract[channelId] = new SimpleCBT(RESERVE_RATIO);
-        subscribeToChannel(channelId);
+
+        mintEquity.value(CHANNEL_INITIATION_FEE)(channelId);
+        subscribeToChannel.value(CHANNEL_SUBSCRIPTION_FEE)(channelId);
 
         Channel memory newChannel = Channel({
             id: channelId,
@@ -196,7 +202,9 @@ contract Micronews is Ownable {
             "Creator must wait 12 hours between posts"
         );
         require(
-            channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg.sender] == true,
+            channelIdToUserSubscriptionStatus[currentFeePeriod][_channelId][msg
+                .sender] ==
+                true,
             "Creator not subscribed to channel"
         );
 
@@ -235,8 +243,8 @@ contract Micronews is Ownable {
         @param upvote boolean
      */
     function voteOnPost(uint256 _channelId, uint256 _postId, bool upvote)
-        isEquityOwner(_channelId)
         public
+        isEquityOwner(_channelId)
     {
         if (upvote) {
             posts[_postId].upvotes++;
@@ -285,9 +293,9 @@ contract Micronews is Ownable {
         );
 
         for (uint256 i = 0; i < getNumberOfChannels(); i++) {
-            uint256 fee = (channels[i].subscribers).mul(CHANNEL_SUBSCRIPTION_FEE).div(
-                2
-            );
+            uint256 fee = (channels[i].subscribers)
+                .mul(CHANNEL_SUBSCRIPTION_FEE)
+                .div(2);
 
             feePeriods[currentFeePeriod][i].valueForEquityDistribution = fee;
             feePeriods[currentFeePeriod][i].valueForCreatorDistribution = fee;
@@ -296,7 +304,10 @@ contract Micronews is Ownable {
         currentFeePeriod++;
     }
 
-    function collectEquityFees(uint256 _channelId) public isEquityOwner(_channelId) {
+    function collectEquityFees(uint256 _channelId)
+        public
+        isEquityOwner(_channelId)
+    {
         uint256 equityOwnership = channelIdToUserEquity[_channelId][msg.sender];
         uint256 totalEquity = channelIdToTotalEquity[_channelId];
 
@@ -307,7 +318,8 @@ contract Micronews is Ownable {
             )) /
             totalEquity;
 
-        periodFeesCollected[currentFeePeriod - 1][_channelId][msg.sender] = true;
+        periodFeesCollected[currentFeePeriod - 1][_channelId][msg
+            .sender] = true;
 
         msg.sender.transfer(payout);
     }

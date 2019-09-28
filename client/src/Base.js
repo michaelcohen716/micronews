@@ -16,25 +16,19 @@ function Base() {
     // loading
     return (
       <div className="outer-container">
-        <div className="inner-container mx-auto d-flex">
-          Loading...
-        </div>
+        <div className="inner-container mx-auto d-flex">Loading...</div>
       </div>
-    )
+    );
   } else if (context.error) {
     //error
     return (
       <div className="outer-container">
-        <div className="inner-container mx-auto d-flex">
-          Error...
-        </div>
+        <div className="inner-container mx-auto d-flex">Error...</div>
       </div>
-    )
+    );
   } else {
     // success
-    return (
-          <Router />
-    );
+    return <Router />;
   }
 }
 

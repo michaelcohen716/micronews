@@ -38,8 +38,6 @@ function Nav() {
     <div className="d-flex flex-column nav">
       <div className="d-flex flex-column my-auto pb-5">
         {items.map((item, i) => {
-            console.log("i", i)
-            console.log("acgiveimte", activeItem)
           return (
             <NavItem
               active={i === activeItem}
