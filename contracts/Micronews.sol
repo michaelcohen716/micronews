@@ -95,7 +95,9 @@ contract Micronews is Ownable {
       @param _channelId to call channel CBT contract
      */
     function mintEquity(uint256 _channelId) public payable {
-        uint256 amount = channelIdToContract[_channelId].mint(); // tokens calculated with msg.value
+        require(msg.value > 0, "Must transfer funds to mint equity");
+        uint256 amount = channelIdToContract[_channelId].mint.value(msg.value)(); // tokens calculated with msg.value
+
         channelIdToTotalEquity[_channelId] = channelIdToTotalEquity[_channelId]
             .add(amount);
         channelIdToUserEquity[_channelId][msg
@@ -160,15 +162,8 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes memory _channelName) public payable onlyOwner {
-        require(
-            msg.value == CHANNEL_INITIATION_FEE + CHANNEL_SUBSCRIPTION_FEE,
-            "Must mint and subscribe to create"
-        );
+    function createChannel(bytes memory _channelName) public onlyOwner {
         channelIdToContract[channelId] = new SimpleCBT(RESERVE_RATIO);
-
-        mintEquity.value(CHANNEL_INITIATION_FEE)(channelId);
-        subscribeToChannel.value(CHANNEL_SUBSCRIPTION_FEE)(channelId);
 
         Channel memory newChannel = Channel({
             id: channelId,
