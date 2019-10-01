@@ -28,10 +28,16 @@ class Dashboard extends React.Component {
   createChannel = async () => {
     const { contract, accounts, web3 } = this.state;
     const channelName = web3.utils.fromAscii("Gaming");
+
+    // const owner = await contract.methods.isOwner().send({
+    //     from: accounts[0]
+    // })
+    // console.log("owner", owner)
+    // console.log('accounts[0', accounts[0])
  
     await contract.methods.createChannel(channelName).send({
-      value: web3.utils.toWei("0.3", "ether"),
-      from: accounts[0]
+      from: accounts[0],
+    //   value: web3.utils.toWei("1", "ether")
     });
   };
 
