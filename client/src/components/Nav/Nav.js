@@ -42,7 +42,6 @@ function Nav({ setActiveChannel, activeChannel }) {
             <NavItem
               active={i === activeChannel}
               setActiveItem={() => setActiveChannel(i)}
-              // setActiveItem={() => setActiveItem(i)}
               item={item}
               key={i}
             />
