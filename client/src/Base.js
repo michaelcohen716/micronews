@@ -7,9 +7,11 @@ import Router from "./Router";
 function Base() {
   const context = useWeb3Context();
   console.log("context", context);
+  console.log("window.web3", window.web3)
 
   useEffect(() => {
-    context.setFirstValidConnector(["MetaMask", "Local"]);
+    context.setFirstValidConnector(["MetaMask"]);
+    // context.setFirstValidConnector(["MetaMask", "Local"]);
   }, []);
 
   if (!context.active && !context.error) {

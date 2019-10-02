@@ -171,7 +171,7 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes memory _channelName) public payable onlyOwner {
+    function createChannel(bytes memory _channelName) public {
         Channel memory newChannel = Channel({
             id: channelId,
             subscribers: 0,

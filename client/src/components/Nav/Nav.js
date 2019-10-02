@@ -18,12 +18,12 @@ function NavItem({ setActiveItem, active, item: { img, text } }) {
 
 const items = [
   {
-    img: film,
-    text: "Film"
-  },
-  {
     img: gaming,
     text: "Gaming"
+  },
+  {
+    img: film,
+    text: "Film"
   },
   {
     img: crypto,
@@ -31,7 +31,7 @@ const items = [
   }
 ];
 
-function Nav() {
+function Nav({ setActiveChannel, activeChannel }) {
   const [activeItem, setActiveItem] = useState(0);
 
   return (
@@ -40,8 +40,9 @@ function Nav() {
         {items.map((item, i) => {
           return (
             <NavItem
-              active={i === activeItem}
-              setActiveItem={() => setActiveItem(i)}
+              active={i === activeChannel}
+              setActiveItem={() => setActiveChannel(i)}
+              // setActiveItem={() => setActiveItem(i)}
               item={item}
               key={i}
             />
