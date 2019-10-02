@@ -71,3 +71,8 @@
   margin-left: 4px;
   margin-top: 2px;
 }
+
+.nav-holder {
+  min-width: 350px;
+  max-width: 350px;
+}

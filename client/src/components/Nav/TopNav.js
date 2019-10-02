@@ -66,7 +66,7 @@ function TopNav({ history }) {
   return (
     <div className="top-nav d-flex my-auto justify-content-between outer-container">
       <div className="my-auto company-name">Micronews</div>
-      <div className="d-flex my-auto mr-5">
+      <div className="d-flex nav-holder my-auto mr-5">
         {TABS.map((tab, i) => {
           return (
             <TopNavItem
@@ -79,7 +79,7 @@ function TopNav({ history }) {
         })}
         <div
           onClick={() => toggleShowAccount(!showAccount)}
-          className="ml-5 account-circle"
+          className="account-circle"
           ref={node}
         >
           {showAccount && (
