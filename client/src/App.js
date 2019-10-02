@@ -8,7 +8,7 @@ import "./App.css";
 
 import { Connectors } from "web3-react";
 const { InjectedConnector, NetworkOnlyConnector } = Connectors;
-const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] });
+const MetaMask = new InjectedConnector({ supportedNetworks: [1, 3, 4] });
 const Local = new NetworkOnlyConnector({
   providerURL: "http://127.0.0.1:7545"
 });
@@ -65,6 +65,11 @@ class App extends Component {
       >
         <div className="app">
           <div className="d-flex flex-column">
+          <div className="position-relative">
+            <div className="position-absolute mock-ui">
+              Mock UI
+            </div>
+          </div>
             <div className="big-container mx-auto">
               <Base />
             </div>

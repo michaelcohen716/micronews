@@ -1,9 +1,11 @@
 import MicronewsContract from "../contracts/Micronews.json";
-import getWeb3 from "./getWeb3";
+import Web3 from "web3";
+
+const ROPSTEN_MICRONEWS_ADDRESS = "0xeE6EB8309013401016aBC546E73695174D66B177";
 
 const getContract = async () => {
-    console.log("ingetcontract")
-  const web3 = await getWeb3();
+  await window.ethereum.enable();
+  const web3 = new Web3(window.web3);
   const accounts = await web3.eth.getAccounts();
 
   const networkId = await web3.eth.net.getId();
@@ -11,9 +13,9 @@ const getContract = async () => {
 
   const instance = new web3.eth.Contract(
     MicronewsContract.abi,
-    deployedNetwork && deployedNetwork.address
+    ROPSTEN_MICRONEWS_ADDRESS
   );
-    console.log("ingetcontract", instance)
+  console.log("ingetcontract", instance);
   return {
     accounts,
     web3,

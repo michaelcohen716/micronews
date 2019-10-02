@@ -17,3 +17,13 @@ body {
 .inner-container {
   width: 800px;
 }
+
+.mock-ui {
+  left: 100px;
+  top: 60px;
+  color: black;
+  font-weight: bold;
+  background: lightgreen;
+  padding: 10px 8px;
+  border-radius: 2px;
+}

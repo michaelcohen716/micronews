@@ -51,3 +51,28 @@
 .top-nav-inactive {
   color: gray;
 }
+
+.account-dash {
+  background: white;
+  box-shadow: 0 1px 5px blue;
+  color: white;
+  right: 40px;
+  top: 8px;
+  height: 160px;
+  width: 160px;
+  border-radius: 4px;
+}
+
+.address {
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px;
+  margin-left: 4px;
+  margin-top: 2px;
+}
+
+.nav-holder {
+  min-width: 350px;
+  max-width: 350px;
+}

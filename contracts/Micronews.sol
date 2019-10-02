@@ -1,6 +1,5 @@
 pragma solidity ^0.5.0;
 
-import "./SimpleCBT.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
@@ -19,7 +18,6 @@ contract Micronews is Ownable {
     uint256 constant WEEK_IN_SECONDS = 86400 * 7;
     uint256 constant MAX_BOOKMARKS_PER_PERIOD = 5;
 
-    mapping(uint256 => SimpleCBT) channelIdToContract;
     mapping(uint256 => Channel) channels;
 
     mapping(uint256 => uint256) channelIdToTotalEquity;
@@ -44,6 +42,9 @@ contract Micronews is Ownable {
 
     uint256 public postId = 1;
     mapping(uint256 => Post) public posts;
+    mapping(uint256 => mapping(uint256 => uint256[])) channelPostsByFeePeriod;
+    /* feePeriodId => channelId => posts */
+
     mapping(address => mapping(uint256 => uint256[])) creatorToPostsByFeePeriod;
 
     mapping(address => uint256) creatorToLastPosted;
@@ -94,22 +95,32 @@ contract Micronews is Ownable {
       @dev call bonded curve mint function and register channel equity ownership
       @param _channelId to call channel CBT contract
      */
-    function mintEquity(uint256 _channelId) public payable {
-        uint256 amount = channelIdToContract[_channelId].mint(); // tokens calculated with msg.value
+
+    /* Bonding curve mint tokens */
+    /*    function mintEquity(uint256 _channelId) public payable {
+        require(msg.value > 0, "Must transfer funds to mint equity");
+         
+          uint256 amount = channelIdToContract[_channelId].mint.value(
+            msg.value
+        )();  
+       
+
         channelIdToTotalEquity[_channelId] = channelIdToTotalEquity[_channelId]
             .add(amount);
         channelIdToUserEquity[_channelId][msg
             .sender] = channelIdToUserEquity[_channelId][msg.sender].add(
             amount
         );
-    }
+    } */
 
     /* 
       @dev call bonded curve burn function and register decrease in channel equity ownership
       @param _channelId to call channel CBT contract
       @param _burnAmount equity to sell
      */
-    function burnEquity(uint256 _channelId, uint256 _burnAmount) public {
+
+    /* Bonding curve burn token */
+    /*   function burnEquity(uint256 _channelId, uint256 _burnAmount) public {
         channelIdToContract[_channelId].burn(_burnAmount);
 
         channelIdToTotalEquity[_channelId] = channelIdToTotalEquity[_channelId]
@@ -119,7 +130,7 @@ contract Micronews is Ownable {
             .sender] = channelIdToUserEquity[_channelId][msg.sender].sub(
             _burnAmount
         );
-    }
+    } */
 
     /* ------ SUBSCRIPTION FUNCTIONS ------ */
 
@@ -160,16 +171,7 @@ contract Micronews is Ownable {
         @dev deploys new CBT contract, one per content channel
         @param _channelName
      */
-    function createChannel(bytes memory _channelName) public payable onlyOwner {
-        require(
-            msg.value == CHANNEL_INITIATION_FEE + CHANNEL_SUBSCRIPTION_FEE,
-            "Must mint and subscribe to create"
-        );
-        channelIdToContract[channelId] = new SimpleCBT(RESERVE_RATIO);
-
-        mintEquity.value(CHANNEL_INITIATION_FEE)(channelId);
-        subscribeToChannel.value(CHANNEL_SUBSCRIPTION_FEE)(channelId);
-
+    function createChannel(bytes memory _channelName) public {
         Channel memory newChannel = Channel({
             id: channelId,
             subscribers: 0,
@@ -222,8 +224,8 @@ contract Micronews is Ownable {
         emit PostCreated(msg.sender, _channelId, _content);
 
         posts[postId] = newPost;
+        channelPostsByFeePeriod[currentFeePeriod][_channelId].push(postId);
         creatorToPostsByFeePeriod[msg.sender][currentFeePeriod].push(postId++);
-
     }
 
     /* ------ VOTING FUNCTIONS ------ */
@@ -332,5 +334,33 @@ contract Micronews is Ownable {
 
     function getNumberOfChannels() public view returns (uint256 _num) {
         return channelId - 1;
+    }
+
+    function getNumberOfPosts(uint256 _feePeriodId, uint256 _channelId)
+        public
+        view
+        returns (uint256 _num)
+    {
+        channelPostsByFeePeriod[_feePeriodId][_channelId].length;
+    }
+
+    function getPostById(uint256 _postId)
+        public
+        view
+        returns (
+            uint256 _timestamp,
+            uint256 _upvotes,
+            uint256 _downvotes,
+            string memory _content,
+            address _creator
+        )
+    {
+        return (
+            posts[_postId].timestamp,
+            posts[_postId].upvotes,
+            posts[_postId].downvotes,
+            posts[_postId].content,
+            posts[_postId].creator
+        );
     }
 }

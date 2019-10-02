@@ -6,28 +6,24 @@ import Router from "./Router";
 
 function Base() {
   const context = useWeb3Context();
-  console.log("context", context);
 
   useEffect(() => {
-    context.setFirstValidConnector(["MetaMask", "Local"]);
+    context.setFirstValidConnector(["MetaMask"]);
   }, []);
 
   if (!context.active && !context.error) {
-    // loading
     return (
       <div className="outer-container">
         <div className="inner-container mx-auto d-flex">Loading...</div>
       </div>
     );
   } else if (context.error) {
-    //error
     return (
       <div className="outer-container">
         <div className="inner-container mx-auto d-flex">Error...</div>
       </div>
     );
   } else {
-    // success
     return <Router />;
   }
 }
