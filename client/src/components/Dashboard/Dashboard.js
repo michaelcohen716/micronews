@@ -25,7 +25,6 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    console.log("this.state", this.state);
     const numTokens = 16.41;
     const tokenVal = 0.73;
     const channelEquity = numTokens * tokenVal;

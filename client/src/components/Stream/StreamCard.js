@@ -7,12 +7,30 @@ function StreamCard({
   item: { channel, subheader, title, body, upvotes, downvotes },
   hideStream
 }) {
+  const [voted, setVoted] = useState(null);
+
+  const registerVote = idx => {
+    if(!voted){
+      setVoted(idx)
+    }
+  }
+
   return (
     <div className="d-flex stream-card my-3 animated fadeIn">
       <div className="vote-slice d-flex flex-column">
         <div className="d-flex flex-column my-auto mx-auto">
-          <img src={upArrow} className="img-fluid arrow-img" />
-          <img src={downArrow} className="img-fluid arrow-img mt-3" />
+          <img
+            src={upArrow}
+            className={`img-fluid arrow-img ${voted === 1 ? "" : "not-voted"}`}
+            onClick={() => registerVote(1)}
+          />
+          <img
+            src={downArrow}
+            className={`img-fluid arrow-img ${
+              voted === 2 ? "" : "not-voted"
+            } mt-3`}
+            onClick={() => registerVote(2)}
+          />
         </div>
       </div>
       <div className="content-slice py-2 px-3 mx-2 d-flex flex-column">
@@ -22,10 +40,9 @@ function StreamCard({
               <div className="blur-content-inner d-flex">
                 <div className="pr-3 mx-auto my-auto blur-content-text">
                   Subscribe to see this content!
-                  </div>
-
-                </div>  
+                </div>
               </div>
+            </div>
           </div>
         )}
         <div className="d-flex content-header mt-2">

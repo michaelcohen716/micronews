@@ -69,3 +69,7 @@
   letter-spacing: 0.4px;
   font-family: "Saira Stencil One", cursive;
 }
+
+.not-voted {
+  opacity: 0.3;
+}
