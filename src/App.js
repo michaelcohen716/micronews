@@ -66,9 +66,9 @@ class App extends Component {
         <div className="app">
           <div className="d-flex flex-column">
           <div className="position-relative">
-            <div className="position-absolute mock-ui">
+            {/* <div className="position-absolute mock-ui">
               Mock UI
-            </div>
+            </div> */}
           </div>
             <div className="big-container mx-auto">
               <Base />

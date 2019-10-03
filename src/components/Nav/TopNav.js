@@ -95,7 +95,7 @@ function TopNav({ history }) {
                 </div>
                 <div className="address">
                   {" "}
-                  <span className="text-muted"> Subscriptions:</span> 1
+                  <span className="text-muted"> Subscriptions:</span> 3
                 </div>
                 <div className="address">
                   {" "}
