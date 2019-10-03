@@ -20,6 +20,10 @@
   font-size: 12px;
 }
 
+.channel-headline {
+  font-family: "Saira Stencil One", cursive;
+  margin-left: 70px;
+}
 
 .channel-title {
   color: blue;
