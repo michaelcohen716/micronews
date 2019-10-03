@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
     const numTokens = 16.41;
     const tokenVal = 0.73;
     const channelEquity = numTokens * tokenVal;
-    const tokenCostBasis = 0.65;
+    const tokenCostBasis = 0.61;
     const costBasis = tokenCostBasis * numTokens;
     const monthlyDiv = 0.007;
 
@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
                 />
                 <DashboardItem
                   title="Equity return"
-                  value={`${(channelEquity / costBasis - 1).toFixed(4) * 100}%`}
+                  value={`${String((channelEquity / costBasis - 1) * 100).slice(0, 5)}%`}
                 />
               </div>
               <div className="d-flex mt-3">

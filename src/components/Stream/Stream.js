@@ -41,7 +41,7 @@ function Stream() {
       <div className="d-flex flex-column stream">
         <div className="mx-auto pr-5 d-flex flex-column mt-4">
           {ITEMS.map((item, i) => {
-            return <StreamCard hideStream={activeChannel !== 0} item={item} />;
+            return <StreamCard hideStream={activeChannel !== 0} item={item} key={i} />;
           })}
         </div>
       </div>
