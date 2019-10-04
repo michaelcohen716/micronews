@@ -30,7 +30,7 @@ Micronews is the first app built on the `Equity Curation Model` (ECM). The ECM i
 
 * **[Micronews Revenue Model](https://docs.google.com/spreadsheets/d/12Wq5UG3ZnsHekSdW4isp9vCAHzdatdprX4ghfyTDsdc/edit?usp=sharing)**
 
-> *Clone the repo and insert your own assumptions*
+> *Clone the spreadsheet and insert your own assumptions*
 
 * **[Suggested Bonding Curve Implementation](https://github.com/dOrgTech/BC-DAO/tree/master/contracts/BondingCurve)**
 
