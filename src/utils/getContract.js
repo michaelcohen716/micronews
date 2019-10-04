@@ -15,7 +15,6 @@ const getContract = async () => {
     MicronewsContract.abi,
     ROPSTEN_MICRONEWS_ADDRESS
   );
-  console.log("ingetcontract", instance);
   return {
     accounts,
     web3,

@@ -32,6 +32,12 @@ const ITEMS = [
   }
 ];
 
+const CHANNELS = [
+  "gaming",
+  "film",
+  "crypto"
+]
+
 function Stream() {
   const [activeChannel, setActiveChannel] = useState(0);
 
@@ -39,7 +45,8 @@ function Stream() {
     <div className="d-flex">
       <StreamNav activeChannel={activeChannel} setActiveChannel={setActiveChannel} />
       <div className="d-flex flex-column stream">
-        <div className="mx-auto pr-5 d-flex flex-column mt-4">
+        <h2 className="channel-headline mt-4">{`m/${CHANNELS[activeChannel]}`}</h2>
+        <div className="mx-auto pr-5 d-flex flex-column mt-2">
           {ITEMS.map((item, i) => {
             return <StreamCard hideStream={activeChannel !== 0} item={item} key={i} />;
           })}
