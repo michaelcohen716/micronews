@@ -9,7 +9,7 @@
   "dependencies": {
     "and": "0.0.3",
     "ethers": "^4.0.37",
-    "npm": "^6.11.3",
+    "npm": "^9.4.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router": "^5.1.0",
